@@ -3,8 +3,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  AfterViewInit,
-  OnInit
+  OnInit,
+  AfterViewInit
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { tap } from 'rxjs/operators';
@@ -12,23 +12,34 @@ import { tap } from 'rxjs/operators';
 @Component({
   template: ''
 })
-export class FilterComponent implements OnInit {
-  @Input() title: string;
-  @Input() name: string;
-  @Output() valueChanges = new EventEmitter<any>();
+export class FilterComponent implements AfterViewInit {
+  @Input()
+  title: string;
+  @Input()
+  name: string;
+  @Input()
+  initialValue: any;
+  @Output()
+  valueChanges = new EventEmitter<any>();
 
   formGroup: FormGroup;
+  // Optional value for in-control behaviour
   value: any;
 
   constructor(protected formBuilder: FormBuilder) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.formGroup = this.buildFormControl();
-    console.log(this.formGroup);
+    this.formGroup.patchValue({ [this.name]: this.initialValue });
     this.formGroup.valueChanges.pipe(tap(this.valueChanges.emit));
   }
 
-  buildFormControl(): FormGroup {
-    return this.formBuilder.group({ [this.name]: '' });
+  /**
+   * Build the form for this particular filter component
+   */
+  protected buildFormControl(): FormGroup {
+    return this.formBuilder.group({
+      [this.name]: ''
+    });
   }
 }

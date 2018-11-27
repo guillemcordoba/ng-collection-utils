@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FilterGroupComponent } from '../filter-group.component';
 import { FormBuilder } from '@angular/forms';
 
-export enum Operators {
+export enum Operator {
   GREATER_THAN = '>',
   LESSER_THAN = '<',
   EQUALS = '=',
@@ -17,17 +17,16 @@ export enum Operators {
     '../filter-toolbar/filter-toolbar.component.css'
   ]
 })
-export class FilterNumberComponent extends FilterGroupComponent
-  implements OnInit {
+export class FilterNumberComponent extends FilterGroupComponent {
   @Input()
-  operators: Operators[] = [
-    Operators.GREATER_THAN,
-    Operators.LESSER_THAN,
-    Operators.EQUALS
+  operators: Operator[] = [
+    Operator.GREATER_THAN,
+    Operator.LESSER_THAN,
+    Operator.EQUALS
     // Operators.BETWEEN
   ];
 
-  selectedOperator = Operators.GREATER_THAN;
+  selectedOperator: Operator;
 
   constructor(protected formBuilder: FormBuilder) {
     super(formBuilder);
@@ -35,7 +34,7 @@ export class FilterNumberComponent extends FilterGroupComponent
 
   getFormProperties() {
     return {
-      operator: Operators.GREATER_THAN,
+      operator: '',
       value: ''
     };
   }

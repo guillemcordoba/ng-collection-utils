@@ -3,11 +3,13 @@ import {
   state,
   style,
   transition,
-  animate
+  animate,
+  AnimationTriggerMetadata
 } from '@angular/animations';
-/*
-export const overlayAnimation = [
-  trigger('overlayMenu', [
+
+export const overlayAnimation: AnimationTriggerMetadata = trigger(
+  'overlayMenu',
+  [
     state(
       'void',
       style({
@@ -17,29 +19,46 @@ export const overlayAnimation = [
     ),
     transition('void <=> *', [
       style({
-        opacity: 1
+        opacity: 0
       }),
       animate('150ms cubic-bezier(0.25, 0.8, 0.25, 1)')
     ])
-  ])
-];
+  ]
+);
 
-export const filterAnimation = [
-  trigger('filter', [
+export const horizontalScale: AnimationTriggerMetadata = trigger(
+  'horizontalScale',
+  [
     transition(':enter', [
       style({
-        transform: 'translateY(-100%)'
+        transform: 'translateX(100%)'
       }),
-      animate('150ms cubic-bezier(0.25, 0.8, 0.25, 1)')
+      animate('1000ms cubic-bezier(0.25, 0.8, 0.25, 1)')
     ]),
     transition(':leave', [
       animate(
-        '150ms cubic-bezier(0.25, 0.8, 0.25, 1)',
+        '1000ms cubic-bezier(0.25, 0.8, 0.25, 1)',
         style({
-          transform: 'translateY(-100%)'
+          transform: 'translateX(100%)'
         })
       )
     ])
+  ]
+);
+
+export const filterAnimation: AnimationTriggerMetadata = trigger('filter', [
+  transition(':enter', [
+    style({
+      height: 0
+    }),
+    animate('100ms cubic-bezier(0.25, 0.8, 0.25, 1)')
+  ]),
+  transition(':leave', [
+    animate(
+      '100ms cubic-bezier(0.25, 0.8, 0.25, 1)',
+      style({
+        height: 0
+      })
+    )
   ])
-];
- */
+]);

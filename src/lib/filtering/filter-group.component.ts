@@ -1,13 +1,6 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnInit,
-  HostBinding
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { FilterComponent } from './filter.component';
-import { FormGroup, FormBuilder, ControlContainer } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   template: ''
@@ -21,7 +14,7 @@ export class FilterGroupComponent extends FilterComponent {
     return {};
   }
 
-  buildFormControl(): FormGroup {
+  protected buildFormControl(): FormGroup {
     return this.formBuilder.group(this.getFormProperties());
   }
 }

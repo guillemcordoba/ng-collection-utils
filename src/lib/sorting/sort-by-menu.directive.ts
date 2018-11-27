@@ -16,7 +16,7 @@ import {
   Portal
 } from '@angular/cdk/portal';
 import { OverlayMenu } from '../overlay.menu';
-import { SortByComponent, SORTING_OPTIONS } from './sort-by/sort-by.component';
+import { SortByComponent, SORTING_OPTIONS, SortOptions } from './sort-by/sort-by.component';
 
 @Directive({
   selector: '[sortByMenu]'
@@ -24,7 +24,7 @@ import { SortByComponent, SORTING_OPTIONS } from './sort-by/sort-by.component';
 export class SortByMenuDirective extends OverlayMenu {
   @Input() sortByMenu: string[] = [];
   @Input() sortByTitle = 'Sort by';
-  @Output() sortByOptionSelected = new EventEmitter<string>();
+  @Output() sortChange = new EventEmitter<SortOptions>();
 
   constructor(
     protected elementRef: ElementRef,
@@ -46,7 +46,7 @@ export class SortByMenuDirective extends OverlayMenu {
     injectionTokens.set(SORTING_OPTIONS, {
       options: this.sortByMenu,
       title: this.sortByTitle,
-      eventEmitter: this.sortByOptionSelected
+      eventEmitter: this.sortChange
     });
 
     // Instantiate new PortalInjector

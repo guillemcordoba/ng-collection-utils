@@ -9,15 +9,15 @@ import {
   OnInit
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseLoading } from './base-loading';
+import { BaseLoading, TemplateInput } from './base-loading';
 
 @Directive({
   selector: '[asyncLoading]'
 })
 export class AsyncLoadingDirective extends BaseLoading implements OnInit {
   @Input('asyncLoading') asyncLoading: Observable<any>;
-  @Input() asyncLoadingError: TemplateRef<any> | Type<any> | string;
-  @Input() asyncLoadingEmpty: TemplateRef<any> | Type<any> | string;
+  @Input() asyncLoadingError: TemplateInput;
+  @Input() asyncLoadingEmpty: TemplateInput;
 
   constructor(
     protected elementRef: ElementRef,

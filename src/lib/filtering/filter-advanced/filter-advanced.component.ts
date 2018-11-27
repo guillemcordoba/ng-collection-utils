@@ -11,6 +11,8 @@ import { FilterNumberComponent } from '../filter-number/filter-number.component'
 import { FilterStringComponent } from '../filter-string/filter-string.component';
 import { FilterDateComponent } from '../filter-date/filter-date.component';
 import { FilterComponent } from '../filter.component';
+import { FilterSelectComponent } from '../filter-select/filter-select.component';
+import { FilterMultioptionComponent } from '../filter-multioption/filter-multioption.component';
 import * as _ from 'lodash';
 
 @Component({
@@ -20,6 +22,12 @@ import * as _ from 'lodash';
 })
 export class FilterAdvancedComponent implements OnInit {
   @ViewChild(CdkPortal) portal: CdkPortal;
+
+  @ContentChildren(FilterSelectComponent)
+  selectFilters: QueryList<FilterSelectComponent>;
+
+  @ContentChildren(FilterMultioptionComponent)
+  multioptionFilters: QueryList<FilterMultioptionComponent>;
 
   @ContentChildren(FilterAutocompleteComponent)
   autocompleteFilters: QueryList<FilterAutocompleteComponent>;
@@ -32,6 +40,7 @@ export class FilterAdvancedComponent implements OnInit {
 
   @ContentChildren(FilterDateComponent)
   dateFilters: QueryList<FilterDateComponent>;
+
   constructor() {}
 
   ngOnInit() {}
@@ -44,6 +53,8 @@ export class FilterAdvancedComponent implements OnInit {
     return _.concat(
       this.listToArray(this.autocompleteFilters),
       this.listToArray(this.dateFilters),
+      this.listToArray(this.multioptionFilters),
+      this.listToArray(this.selectFilters),
       this.listToArray(this.numberFilters),
       this.listToArray(this.stringFilters)
     );

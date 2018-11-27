@@ -2,10 +2,12 @@ import {
   Component,
   QueryList,
   ContentChildren,
+  OnDestroy,
   AfterViewInit,
   Output,
   EventEmitter,
-  ContentChild
+  ContentChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { FilterAutocompleteComponent } from '../filter-autocomplete/filter-autocomplete.component';
 import { FilterDateComponent } from '../filter-date/filter-date.component';
@@ -13,21 +15,34 @@ import * as _ from 'lodash';
 import { FilterNumberComponent } from '../filter-number/filter-number.component';
 import { FilterStringComponent } from '../filter-string/filter-string.component';
 import { FilterComponent } from '../filter.component';
-import { FilterAdvancedComponent } from '../filter-advanced//filter-advanced.component';
-import { combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { FilterSelectComponent } from '../filter-select/filter-select.component';
+import { FilterMultioptionComponent } from '../filter-multioption/filter-multioption.component';
+import { FilterAdvancedComponent } from '../filter-advanced/filter-advanced.component';
+import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { CdkPortal } from '@angular/cdk/portal';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { filterAnimation } from '../../animations';
 
 @Component({
   selector: 'filter-toolbar',
   templateUrl: './filter-toolbar.component.html',
-  styleUrls: ['./filter-toolbar.component.css']
+  styleUrls: ['./filter-toolbar.component.css'],
+  animations: [filterAnimation],
+  encapsulation: ViewEncapsulation.None
 })
-export class FilterToolbarComponent implements AfterViewInit {
+export class FilterToolbarComponent implements AfterViewInit, OnDestroy {
   @Output() valueChanges = new EventEmitter<any>();
+  formGroup: FormGroup;
 
   @ContentChildren(FilterAutocompleteComponent)
   autocompleteFilters: QueryList<FilterAutocompleteComponent>;
+
+  @ContentChildren(FilterSelectComponent)
+  selectFilters: QueryList<FilterSelectComponent>;
+
+  @ContentChildren(FilterMultioptionComponent)
+  multioptionFilters: QueryList<FilterMultioptionComponent>;
 
   @ContentChildren(FilterNumberComponent)
   numberFilters: QueryList<FilterNumberComponent>;
@@ -45,62 +60,115 @@ export class FilterToolbarComponent implements AfterViewInit {
   expandable = false;
   expanded = false;
   advancedPortal: CdkPortal;
+  subscription: Subscription;
 
-  constructor() {}
+  constructor(private formBuilder: FormBuilder) {}
 
   private listToArray<T>(list: QueryList<T>): Array<T> {
     return list ? list.toArray() : [];
   }
 
+  /**
+   * Concats all active filters, including the advanced filters if active
+   */
   getAllFilters(): FilterComponent[] {
-    return _.concat(
+    let filters = _.concat(
       this.listToArray(this.autocompleteFilters),
+      this.listToArray(this.multioptionFilters),
+      this.listToArray(this.selectFilters),
       this.listToArray(this.dateFilters),
       this.listToArray(this.numberFilters),
       this.listToArray(this.stringFilters)
     );
+    if (this.expanded) {
+      filters = _.concat(filters, this.advancedFilter.getAllFilters());
+    }
+    return filters;
   }
 
+  /**
+   * Here the views have been populated, build the form
+   */
   ngAfterViewInit() {
-    this.subscribeToChanges(this.getAllFilters());
     if (this.advancedFilter) {
       this.expandable = true;
       this.advancedPortal = this.advancedFilter.portal;
     }
+    this.buildForm();
   }
 
+  /**
+   * Cleanup
+   */
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  /**
+   * Set filter toolbar visibility state
+   * Needed for the interaction with filter-toggler.directive
+   */
   setShow(_show: boolean) {
     this.show = _show;
   }
 
+  /**
+   * Toggle filter toolbar visibility state
+   */
   toggle() {
     this.show = !this.show;
   }
 
+  /**
+   * Toggles the visibility of the advanced filter component and
+   * rebuilds the form
+   */
   toggleExpanded() {
     this.expanded = !this.expanded;
-    this.valueChanges = new EventEmitter<any>();
 
-    let filters = this.getAllFilters();
-    if (this.expanded) {
-      filters = _.concat(filters, this.advancedFilter.getAllFilters());
-    }
-
-    this.subscribeToChanges(filters);
+    this.subscription.unsubscribe();
+    this.buildForm();
   }
 
-  subscribeToChanges(filters: FilterComponent[]) {
-    filters[0].formGroup.valueChanges.subscribe(console.log);
-    combineLatest(
-      filters.map(filter =>
-        filter.formGroup.valueChanges.pipe(tap(console.log))
+  /**
+   * Retrieve all active filters and build the global group form
+   */
+  private buildForm() {
+    this.formGroup = this.formBuilder.group(
+      this.getAllFilters().reduce(
+        (formObject, value) => ({
+          ...formObject,
+          [value.name]: value.formGroup
+        }),
+        {}
       )
-    ).pipe(
-      tap(console.log),
-      map((tuple: any[]) =>
-        tuple.reduce((object, value) => ({ ...object, value }), {})
-      ),
-      tap(object => this.valueChanges.emit(object))
     );
+    this.subscription = this.formGroup.valueChanges
+      .pipe(
+        tap(values => this.removeNulls(values)),
+        tap(values => this.flatFilter(values))
+      )
+      .subscribe(values => this.valueChanges.emit(values));
+  }
+
+  private removeNulls(obj: any) {
+    Object.keys(obj).forEach(key => {
+      if (typeof obj[key] === 'object' && obj[key] !== null)
+        this.removeNulls(obj[key]);
+      if (
+        !obj[key] ||
+        (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
+      )
+        delete obj[key];
+    });
+  }
+
+  private flatFilter(filterValue: any) {
+    Object.keys(filterValue).forEach(filterProperty => {
+      const keys = Object.keys(filterValue);
+      if (keys.length === 1 && filterProperty === keys[0]) {
+        filterValue[filterProperty] = filterValue[filterProperty][keys[0]];
+      }
+    });
   }
 }

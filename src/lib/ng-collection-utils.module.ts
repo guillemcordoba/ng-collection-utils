@@ -1,17 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatCardModule,
   MatRadioModule,
   MatInputModule,
   MatButtonModule,
+  MatButtonToggleModule,
   MatIconModule,
   MatSelectModule,
   MatDatepickerModule,
   MatChipsModule,
   MatAutocompleteModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatSlideToggleModule,
+  MatFormFieldModule,
+  MatDividerModule,
+  MatCheckboxModule
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { PortalModule } from '@angular/cdk/portal';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SortByMenuDirective } from './sorting/sort-by-menu.directive';
@@ -25,7 +32,7 @@ import { FilterNumberComponent } from './filtering/filter-number/filter-number.c
 import { FilterDateComponent } from './filtering/filter-date/filter-date.component';
 import { FilterMultioptionComponent } from './filtering/filter-multioption/filter-multioption.component';
 import { FilterAutocompleteComponent } from './filtering/filter-autocomplete/filter-autocomplete.component';
-import { ChipsAutocompleteComponent } from './chips-autocomplete/chips-autocomplete.component';
+import { ChipsAutocompleteComponent } from './components/chips-autocomplete/chips-autocomplete.component';
 import { FilterGroupComponent } from './filtering/filter-group.component';
 import { FilterAdvancedComponent } from './filtering/filter-advanced/filter-advanced.component';
 import { LoadingComponent } from './loading/components/loading/loading.component';
@@ -34,10 +41,16 @@ import { GlobalLoadingService } from './loading/services/global-loading.service'
 import { LoadingEmptyComponent } from './loading/components/loading-empty/loading-empty.component';
 import { LoadingErrorComponent } from './loading/components/loading-error/loading-error.component';
 import { SyncLoadingDirective } from './loading/directives/sync-loading.directive';
+import { SearchBoxComponent } from './searching/search-box/search-box.component';
+import { LazyLoadingDirective } from './loading/directives/lazy-loading.directive';
+import { FilterSelectComponent } from './filtering/filter-select/filter-select.component';
+import { OverlayTriggerDirective } from './overlay-trigger.directive';
+import { OverlayCardComponent } from './components/overlay-card/overlay-card.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     FlexLayoutModule,
     MatCardModule,
     MatRadioModule,
@@ -45,10 +58,16 @@ import { SyncLoadingDirective } from './loading/directives/sync-loading.directiv
     MatAutocompleteModule,
     MatInputModule,
     MatIconModule,
+    MatButtonToggleModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatSlideToggleModule,
+    MatMomentDateModule,
+    MatDividerModule,
     PortalModule,
     FormsModule,
     ReactiveFormsModule
@@ -71,7 +90,12 @@ import { SyncLoadingDirective } from './loading/directives/sync-loading.directiv
     AsyncLoadingDirective,
     LoadingEmptyComponent,
     LoadingErrorComponent,
-    SyncLoadingDirective
+    SyncLoadingDirective,
+    SearchBoxComponent,
+    LazyLoadingDirective,
+    FilterSelectComponent,
+    OverlayTriggerDirective,
+    OverlayCardComponent
   ],
   exports: [
     SortByMenuDirective,
@@ -81,18 +105,23 @@ import { SyncLoadingDirective } from './loading/directives/sync-loading.directiv
     FilterDateComponent,
     FilterAutocompleteComponent,
     FilterAdvancedComponent,
+    FilterMultioptionComponent,
     ChipsAutocompleteComponent,
     FilterTogglerDirective,
+    FilterSelectComponent,
+    OverlayTriggerDirective,
     LoadingComponent,
     SyncLoadingDirective,
     AsyncLoadingDirective,
-    LoadingEmptyComponent
+    LoadingEmptyComponent,
+    SearchBoxComponent
   ],
   entryComponents: [
     SortByComponent,
     LoadingComponent,
     LoadingEmptyComponent,
-    LoadingErrorComponent
+    LoadingErrorComponent,
+    OverlayCardComponent
   ],
   providers: [GlobalLoadingService]
 })
