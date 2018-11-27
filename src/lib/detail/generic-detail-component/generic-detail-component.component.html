@@ -1,0 +1,7 @@
+<div fxLayout="column">
+  <ng-container *ngFor="let property of (item | keyvalue)">
+    <div fxLayout="row">
+      <span>{{ property.key }}</span>: <span>{{ property.value }}</span>
+    </div>
+  </ng-container>
+</div>

@@ -7,6 +7,7 @@ import {
   MatInputModule,
   MatButtonModule,
   MatButtonToggleModule,
+  MatListModule,
   MatIconModule,
   MatSelectModule,
   MatDatepickerModule,
@@ -46,6 +47,8 @@ import { LazyLoadingDirective } from './loading/directives/lazy-loading.directiv
 import { FilterSelectComponent } from './filtering/filter-select/filter-select.component';
 import { OverlayTriggerDirective } from './overlay-trigger.directive';
 import { OverlayCardComponent } from './components/overlay-card/overlay-card.component';
+import { GenericMasterListComponent } from './master/generic-master-list/generic-master-list.component';
+import { GenericDetailComponentComponent } from './detail/generic-detail-component/generic-detail-component.component';
 
 @NgModule({
   imports: [
@@ -55,6 +58,7 @@ import { OverlayCardComponent } from './components/overlay-card/overlay-card.com
     MatCardModule,
     MatRadioModule,
     MatChipsModule,
+    MatListModule,
     MatAutocompleteModule,
     MatInputModule,
     MatIconModule,
@@ -95,7 +99,9 @@ import { OverlayCardComponent } from './components/overlay-card/overlay-card.com
     LazyLoadingDirective,
     FilterSelectComponent,
     OverlayTriggerDirective,
-    OverlayCardComponent
+    OverlayCardComponent,
+    GenericMasterListComponent,
+    GenericDetailComponentComponent
   ],
   exports: [
     SortByMenuDirective,
@@ -114,7 +120,9 @@ import { OverlayCardComponent } from './components/overlay-card/overlay-card.com
     SyncLoadingDirective,
     AsyncLoadingDirective,
     LoadingEmptyComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    GenericMasterListComponent,
+    GenericDetailComponentComponent
   ],
   entryComponents: [
     SortByComponent,

@@ -3,6 +3,8 @@
  */
 
 export * from './lib/components';
+export * from './lib/master';
+export * from './lib/detail';
 export * from './lib/animations';
 export * from './lib/loading';
 export * from './lib/sorting';
