@@ -45,7 +45,8 @@ import { SyncLoadingDirective } from './loading/directives/sync-loading.directiv
 import { SearchBoxComponent } from './searching/search-box/search-box.component';
 import { LazyLoadingDirective } from './loading/directives/lazy-loading.directive';
 import { FilterSelectComponent } from './filtering/filter-select/filter-select.component';
-import { OverlayTriggerDirective } from './overlay-trigger.directive';
+import { OverlayTriggerDirective } from './directives/overlay-trigger.directive';
+import { HashColorDirective } from './directives/hash-color.directive';
 import { OverlayCardComponent } from './components/overlay-card/overlay-card.component';
 import { GenericMasterListComponent } from './master/generic-master-list/generic-master-list.component';
 import { GenericDetailComponentComponent } from './detail/generic-detail-component/generic-detail-component.component';
@@ -74,7 +75,7 @@ import { GenericDetailComponentComponent } from './detail/generic-detail-compone
     MatDividerModule,
     PortalModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     SortByMenuDirective,
@@ -101,7 +102,8 @@ import { GenericDetailComponentComponent } from './detail/generic-detail-compone
     OverlayTriggerDirective,
     OverlayCardComponent,
     GenericMasterListComponent,
-    GenericDetailComponentComponent
+    GenericDetailComponentComponent,
+    HashColorDirective
   ],
   exports: [
     SortByMenuDirective,
@@ -122,7 +124,8 @@ import { GenericDetailComponentComponent } from './detail/generic-detail-compone
     LoadingEmptyComponent,
     SearchBoxComponent,
     GenericMasterListComponent,
-    GenericDetailComponentComponent
+    GenericDetailComponentComponent,
+    HashColorDirective
   ],
   entryComponents: [
     SortByComponent,
