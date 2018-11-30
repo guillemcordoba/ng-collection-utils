@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Portal, TemplatePortal, ComponentPortal } from '@angular/cdk/portal';
-import { OverlayMenu } from './overlay.menu';
-import { OverlayCardComponent } from './components/overlay-card/overlay-card.component';
+import { OverlayMenu } from '../overlay.menu';
+import { OverlayCardComponent } from '../components/overlay-card/overlay-card.component';
 
 @Directive({
   selector: '[overlayTrigger]'
